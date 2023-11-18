@@ -21,7 +21,6 @@ jobs:
         pip install -r ./requirements/requirements.lint.txt
     - name: Test with flake8
       run: python -m flake8 backend/ 
-
   django_tests:
     runs-on: ubuntu-latest
     needs: flake8_test
@@ -58,9 +57,9 @@ jobs:
         cd backend/
         python manage.py test
   build_and_push_to_docker_hub:
-    needs: django_tests
     name: Push Docker image to DockerHub
     runs-on: ubuntu-latest
+    needs: django_tests
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -79,19 +78,16 @@ jobs:
           tags: v0vanjke/kittygram_backend:latest
   frontend_tests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up nodeJS
       uses: actions/setup-node@v3
       with:
         node-version: 18
-
     - name: Install dependencies
       run: |
         cd frontend/
         npm ci
-
     - name: Test frontend
       run: |
         cd frontend/
